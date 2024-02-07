@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+
+"""This is the console base for the unit """
+
+import cmd
+
+class HBNBCommand(cmd.Cmd):
+    """Class for the command interpreter"""
+
+    prompt = "(hbnb)"
+
+    def do_quit(self, arg):
+        """Close program and saves safely data """
+        return True
+
+    def help_quit(self, arg):
+        """gets help"""
+        print("press Quit command to exit")
+        
+    def do_EOF(self, arg):
+        """EOF command to exit the program."""
+        print()
+        return True
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
