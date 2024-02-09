@@ -98,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
                     print(str(value))
 
     def default(self, arg):
-        """default of cmd module for invalid syntax"""
+        """default of cmd module for invalid syntax, destry user"""
         arg_list = arg.split('.') #User.all() output: ['User', 'all()']
         incoming_class_name = arg_list[0]
         command = arg_list[1].split('(')
