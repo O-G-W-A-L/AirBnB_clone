@@ -4,6 +4,8 @@
 
 import cmd
 import shlex
+import re
+import ast
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -12,6 +14,30 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+def split_braces(new_incoming_arg):
+    """splits the curly braces for an update"""
+    braces = re.search(r"\{(.*?)\}", new_incoming_arg)
+    if braces:
+        id_with_comma = shlex.split(new_incoming_arg[:braces.span()[0]])
+        id = [i.strip(",") for i in id_with_comma][0]
+
+        str_data = braces.group(1)
+        try:
+            arg_dict = ast.literal_eval("{" + str_data + "}")
+        except exception:
+            print("** invalid dict format **")
+            return
+        return id, arg_dict
+    else:
+        commands = new_incoming_arg.split(",")
+        try:
+            id = commands[0]
+            attr_name = commands[1]
+            attr_value = commands[2]
+            return f"{id}", f"{attr_name} {attr_value}"
+        except Exception:
+            print("** argument missing **")
 
 class HBNBCommand(cmd.Cmd):
     """Class for the command interpreter"""
@@ -106,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         incoming_method = command[0]
 
         new_incoming_arg = command[1].split(')')[0]
-
+        
         method_dict = {
             'all': self.do_all,
             'show': self.do_show,
@@ -116,10 +142,22 @@ class HBNBCommand(cmd.Cmd):
         }
 
         if incoming_method in method_dict.keys():
-            return method_dict[incoming_method]("{} {}".format(incoming_class_name, new_incoming_arg))
+            if incoming_method != "update":
+                return method_dict[incoming_method]("{} {}".format(incoming_class_name, new_incoming_arg))
+            else:
+                obj_id, arg_dict = split_braces(new_incoming_arg)
+                try:
+                    if isinstance(arg_dict, str):
+                        attribute = arg_dict
+                        return method_dict[incoming_method]("{} {} {}".format(incoming_class_name, obj_id, attribute))
+                    elif isinstance(arg_dict, dict):
+                        dict_attributes = arg_dict
+                        return method_dict[incoming_method]("{} {} {}".format(incoming_class_name, obj_id, dict_attributes))
+                except Exception:
+                    print("** arguments missing **")
         print("*** Unknown syntax: {}".format(arg))
         return False
-    
+
     def do_count(self, arg):
         """counts and retrives the number of instances of a class: <class name>.count()"""
         objects = storage.all()
@@ -160,8 +198,27 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
             else:
                 obj = objects[key]
-                attr_name = commands[2]
-                attr_value = commands[3]
+                braces = re.search(r"\{(.*?)\}", arg)
+                if braces:
+                    str_data = braces.group(1)
+                    arg_dict = ast.literal_eval("{" + str_data + "}")
+
+                    attr_names = list(arg_dict.keys())
+                    attr_values = list(arg_dict.values())
+
+                    attr_name1 = attr_names[0]
+                    attr_value1 = attr_values[0]
+
+                    attr_name2 = attr_names[1]
+                    attr_value2 = attr_values[1]
+
+                    setattr(obj, attr_name1, attr_value1)
+                    setattr(obj, attr_name2, attr_value2)
+
+                    
+                else:
+                    attr_name = commands[2]
+                    attr_value = commands[3]
 
                 try:
                     attr_value = eval(attr_value)
