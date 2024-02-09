@@ -96,25 +96,47 @@ class HBNBCommand(cmd.Cmd):
             for key, value in objects.items():
                 if key.split('.')[0] == commands[0]:
                     print(str(value))
+
     def default(self, arg):
         """default of cmd module for invalid syntax"""
         arg_list = arg.split('.') #User.all() output: ['User', 'all()']
-        #arg_list[0] = 'User'
-        #arg_list[1] = 'all()'
         incoming_class_name = arg_list[0]
         command = arg_list[1].split('(')
 
-        #command[0] = 'all()'
-        #command[1] = ')'
-
         incoming_method = command[0]
 
-        method_dict = {'all': self.do_all, 'show': self.do_show, 'destroy': self.do_destroy, 'update': self.do_update}
+        method_dict = {
+            'all': self.do_all,
+            'show': self.do_show,
+            'destroy': self.do_destroy,
+            'update': self.do_update,
+            'count': self.do_count
+        }
 
         if incoming_method in method_dict.keys():
             return method_dict[incoming_method]("{} {}".format(incoming_class_name, ''))
         print("*** Unknown syntax: {}".format(arg))
         return False
+    
+    def do_count(self, arg):
+        """counts and retrives the number of instances of a class: <class name>.count()"""
+        objects = storage.all()
+        commands = shlex.split(arg)
+        if arg:
+            incoming_class_name = commands[0]
+
+        count = 0
+        if commands:
+            if incoming_class_name in self.valid_classes:
+                for obj in objects.values():
+                    if obj.__class__.__name__ == incoming_class_name:
+                        count += 1
+                print(count)
+            else:
+                print("** class name doesn't exist **")
+        else:
+            print("** class name missing **")
+        
 
     def do_update(self, arg):
         """updates an instance by adding or updating an attribute"""
