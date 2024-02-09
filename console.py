@@ -96,6 +96,25 @@ class HBNBCommand(cmd.Cmd):
             for key, value in objects.items():
                 if key.split('.')[0] == commands[0]:
                     print(str(value))
+    def default(self, arg):
+        """default of cmd module for invalid syntax"""
+        arg_list = arg.split('.') #User.all() output: ['User', 'all()']
+        #arg_list[0] = 'User'
+        #arg_list[1] = 'all()'
+        incoming_class_name = arg_list[0]
+        command = arg_list[1].split('(')
+
+        #command[0] = 'all()'
+        #command[1] = ')'
+
+        incoming_method = command[0]
+
+        method_dict = {'all': self.do_all, 'show': self.do_show, 'destroy': self.do_destroy, 'update': self.do_update}
+
+        if incoming_method in method_dict.keys():
+            return method_dict[incoming_method]("{} {}".format(incoming_class_name, ''))
+        print("*** Unknown syntax: {}".format(arg))
+        return False
 
     def do_update(self, arg):
         """updates an instance by adding or updating an attribute"""
