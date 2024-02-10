@@ -34,6 +34,9 @@ class BaseModel:
         """returns dict containing all values """
         inst_dict = self.__dict__.copy()
         inst_dict["__class__"] = self.__class__.__name__
+
+        if isinstance(inst_dict["created_at"], datetime):
+            inst_dict["created_at"] = inst_dict["created_at"].isoformat()
         if isinstance(inst_dict["updated_at"], datetime):
             inst_dict["updated_at"] = inst_dict["updated_at"].isoformat()
 
