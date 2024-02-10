@@ -14,10 +14,10 @@ class TestUser(unittest.TestCase):
         models.storage.__file_path = self.test_file
         models.storage.save()
 
-    def tearDown(self)
-    """remove temp test file"""
-    if os.path.exists(self.test_file):
-        os.remove(self.test_file)
+    def tearDown(self):
+        """remove temp test file"""
+        if os.path.exists(self.test_file):
+            os.remove(self.test_file)
 
     def test_user_attributes(self):
         """test user attr and create new user instance"""
@@ -68,12 +68,11 @@ class TestUser(unittest.TestCase):
         self.assertEqual(test_user.first_name, "Betty")
         self.assertEqual(test_user.last_name, "Bar")
 
-    def test_user_instance_to_dict(delf):
+    def test_user_instance_to_dict(self):
         """user instance to dict"""
-        test_user = User(eail="airbnb@mail.com", password="root", first_name="Betty", last_name="Bar")
+        test_user = User(email="airbnb@mail.com", password="root", first_name="Betty", last_name="Bar")
 
         user_dict = test_user.to_dict()
-
         self.assertEqual(user_dict['email'], "airbnb@mail.com")
         self.assertEqual(user_dict['password'], "root")
         self.assertEqual(user_dict['first_name'], "Betty")

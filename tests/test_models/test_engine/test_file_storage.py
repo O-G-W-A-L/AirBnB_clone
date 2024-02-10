@@ -41,7 +41,7 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """tests the new methods by creating and storing a new object"""
         obj = BaseModel()
-        models.storage,new(obj)
+        models.storage.new(obj)
         self.assertIn("BaseModel.{}".format(obj.id), models.storage.all())
 
     def test_new_with_args(self):
@@ -77,13 +77,13 @@ class TestFileStorage(unittest.TestCase):
         obj = BaseModel()
         models.storage.new(obj)
         models.storage.save()
-        self.asserTrue(os.path.exists(models.storage._FileStorage__file_path))
+        self.assertTrue(os.path.exists(models.storage._FileStorage__file_path))
 
     def test_reload_empty_file(self):
         """test reloading when the file if empty or does not exist"""
         with self.assertRaises(TypeError):
-            models.Storage()
-            models.Storage.reload()
+            models.storage()
+            models.storage.reload()
 
 if __name__ == "__main__":
     unittest.main()

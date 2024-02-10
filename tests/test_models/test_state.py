@@ -18,7 +18,7 @@ class TestState(unittest.TestCase):
 
     def testHasAttributes(self):
         """verify if attributes exist"""
-        self.assertTrue(hasattr(self.s, 'name')
+        self.assertTrue(hasattr(self.s, 'name'))
         self.assertTrue(hasattr(self.s, 'id'))
         self.assertTrue(hasattr(self.s, 'created_at'))
         self.assertTrue(hasattr(self.s, 'updated_at'))
