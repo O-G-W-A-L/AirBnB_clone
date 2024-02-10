@@ -1,0 +1,37 @@
+0x00. AirBnB clone - The console
+
+Background Context: The AirBnB clone project aims to create a simplified version of the popular AirBnB platform. In this initial step, we’ll build a command interpreter to manage AirBnB objects. This is a crucial foundation for subsequent tasks, including HTML/CSS templating, database storage, API integration, and front-end development.
+
+Here are the key tasks we will tackle:
+
+    BaseModel Class:
+        We’ll create a parent class called BaseModel responsible for initializing, serializing, and deserializing instances.
+        The flow will involve converting instances to dictionaries, then to JSON strings, and finally saving them to files.
+
+    AirBnB Classes:
+        We’ll define classes (e.g., User, State, City, Place) that inherit from BaseModel.
+        These classes will represent different objects within the AirBnB system.
+
+    Storage Engine:
+        Our first storage engine will be a simple file-based system.
+        We’ll abstract away the details of saving and retrieving objects from files.
+
+    Unit Testing:
+        We’ll create comprehensive unit tests to validate our classes and storage engine.
+
+What’s a Command Interpreter? Think of it as a specialized version of the Shell. While the Shell is a general-purpose command-line interface, our command interpreter will focus solely on managing AirBnB objects. Here’s what it allows us to do:
+
+    Create: We can create new objects (e.g., users, places) within our system.
+    Retrieve: We can fetch objects from files or databases.
+    Operate: We can perform operations on objects (e.g., counting, computing statistics).
+    Update: We can modify attributes of existing objects.
+    Destroy: We can delete objects when needed.
+
+Resources to Explore:
+
+    cmd module: Provides tools for building command interpreters.
+    uuid module: Useful for generating unique identifiers.
+    datetime: Helps with handling date and time.
+    unittest module: Essential for writing unit tests.
+    Understanding packages and Python package creation.
+    Familiarize yourself with command-line interfaces and their usage.

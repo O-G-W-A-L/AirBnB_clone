@@ -25,7 +25,7 @@ def split_braces(new_incoming_arg):
         str_data = braces.group(1)
         try:
             arg_dict = ast.literal_eval("{" + str_data + "}")
-        except exception:
+        except Exception:
             print("** invalid dict format **")
             return
         return id, arg_dict
